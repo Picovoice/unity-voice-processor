@@ -45,9 +45,6 @@ namespace Pv.Unity
         /// Index of selected audio recording device
         /// </summary>
         public int CurrentDeviceIndex { get; private set; } = -1;
-                
-        AudioSource _audioSource;        
-        short[] _pcmBuffer;
 
         /// <summary>
         /// Name of selected audio recording device
@@ -68,16 +65,19 @@ namespace Pv.Unity
         static UnityVoiceProcessor _instance;
         public static UnityVoiceProcessor Instance
         {
-            get {
+            get
+            {
                 if (_instance == null) FindObjectOfType<UnityVoiceProcessor>();
                 if (_instance == null)
                 {
-                    _instance = new GameObject("Pv.UnityVoiceProcessor").AddComponent<UnityVoiceProcessor>();                    
+                    _instance = new GameObject("Pv.Unity.UnityVoiceProcessor").AddComponent<UnityVoiceProcessor>();
                     DontDestroyOnLoad(_instance.gameObject);
                 }
                 return _instance;
             }
         }
+
+        AudioSource _audioSource;
 
         void Awake()
         {
@@ -107,13 +107,20 @@ namespace Pv.Unity
         /// <param name="deviceIndex">Index of the new audio capture device</param>
         public void ChangeDevice(int deviceIndex)
         {
-            if (Microphone.IsRecording(CurrentDeviceName))
+            if (deviceIndex < 0 || deviceIndex >= Microphone.devices.Length)
+            {
+                Debug.LogError($"Specified device index {deviceIndex} is not a valid recording device");
+                return;
+            }
+
+            bool wasRecording = Microphone.IsRecording(CurrentDeviceName);
+            if (wasRecording)
                 StopRecording();
-            else
-                Microphone.End(CurrentDeviceName);
 
             CurrentDeviceIndex = deviceIndex;
-            StartRecording(SampleRate, FrameLength);
+
+            if (wasRecording)
+                StartRecording(SampleRate, FrameLength);
         }
 
         /// <summary>
@@ -125,15 +132,14 @@ namespace Pv.Unity
         {
             StopRecording();
 
-            IsRecording = true;
             SampleRate = sampleRate;
             FrameLength = frameSize;
-            
-            _audioSource.clip = Microphone.Start(CurrentDeviceName, true, 1, sampleRate);            
+
+            _audioSource.clip = Microphone.Start(CurrentDeviceName, true, 1, sampleRate);
             _audioSource.outputAudioMixerGroup = unityVoiceProcessorMixer;
-            _pcmBuffer = new short[frameSize];
-           
+
             StartCoroutine(RecordData());
+            IsRecording = true;
         }
 
         /// <summary>
@@ -141,24 +147,23 @@ namespace Pv.Unity
         /// </summary>
         public void StopRecording()
         {
-            if (!Microphone.IsRecording(CurrentDeviceName)) 
+            if (!Microphone.IsRecording(CurrentDeviceName))
                 return;
-
-            IsRecording = false;
 
             Microphone.End(CurrentDeviceName);
             Destroy(_audioSource.clip);
             _audioSource.clip = null;
 
             StopCoroutine(RecordData());
+            IsRecording = false;
         }
 
         /// <summary>
         /// Loop for buffering incoming audio data and delivering frames
         /// </summary>
         IEnumerator RecordData()
-        {            
-            float[] sampleBuffer = new float[FrameLength];            
+        {
+            float[] sampleBuffer = new float[FrameLength];
             int startReadPos = 0;
             while (_audioSource.clip != null && Microphone.IsRecording(CurrentDeviceName))
             {
@@ -167,13 +172,13 @@ namespace Pv.Unity
                     curClipPos += _audioSource.clip.samples;
 
                 int samplesAvailable = curClipPos - startReadPos;
-                if (samplesAvailable < FrameLength) 
+                if (samplesAvailable < FrameLength)
                 {
                     yield return null;
                     continue;
                 }
-                
-                int endReadPos = startReadPos + FrameLength;                    
+
+                int endReadPos = startReadPos + FrameLength;
                 if (endReadPos > _audioSource.clip.samples)
                 {
                     // fragmented read (wraps around to beginning of clip)
@@ -181,7 +186,7 @@ namespace Pv.Unity
                     int numSamplesClipEnd = _audioSource.clip.samples - startReadPos;
                     float[] endClipSamples = new float[numSamplesClipEnd];
                     _audioSource.clip.GetData(endClipSamples, startReadPos);
-                        
+
                     // read bit at start of clip
                     int numSamplesClipStart = endReadPos - _audioSource.clip.samples;
                     float[] startClipSamples = new float[numSamplesClipStart];
@@ -195,17 +200,18 @@ namespace Pv.Unity
                 {
                     _audioSource.clip.GetData(sampleBuffer, startReadPos);
                 }
-                    
+
                 startReadPos = endReadPos % _audioSource.clip.samples;
-                                    
+
                 // converts to 16-bit int samples
+                short[] pcmBuffer = new short[sampleBuffer.Length];
                 for (int i = 0; i < FrameLength; i++)
                 {
-                    _pcmBuffer[i] = (short)Math.Floor(sampleBuffer[i] * short.MaxValue);
+                    pcmBuffer[i] = (short)Math.Floor(sampleBuffer[i] * short.MaxValue);
                 }
 
                 // raise buffer event
-                OnFrameCaptured?.Invoke(_pcmBuffer);                                                
+                OnFrameCaptured?.Invoke(pcmBuffer);
             }
         }
     }
