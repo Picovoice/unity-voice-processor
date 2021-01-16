@@ -5,14 +5,15 @@ using UnityEngine;
 using Pv.Unity;
 
 public class UnityVoiceProcessorListener : MonoBehaviour
-{    
-    // Start is called before the first frame update
+{
+    int sampleRate = 16000;
+    int frameLength = 512;
+
     void Start()
     {
         Debug.Log("Available Devices: " + string.Join(",", UnityVoiceProcessor.Instance.Devices));
     }
 
-    // Update is called once per frame
     void Update()
     {                
         if (Input.GetKeyDown(KeyCode.Space))
@@ -25,7 +26,7 @@ public class UnityVoiceProcessorListener : MonoBehaviour
             else
             {
                 UnityVoiceProcessor.Instance.OnFrameCaptured += VoiceProcessor_OnFrameCaptured;
-                UnityVoiceProcessor.Instance.StartRecording(16000, 512);
+                UnityVoiceProcessor.Instance.StartRecording(sampleRate, frameLength);
             }
         }        
     }
