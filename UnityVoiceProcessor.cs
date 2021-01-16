@@ -19,7 +19,16 @@ namespace Pv.Unity
         /// <summary>
         /// Indicates whether microphone is capturing or not
         /// </summary>
-        public bool IsRecording { get; private set; }
+        public bool IsRecording
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(CurrentDeviceName))
+                    return false;
+                else
+                    return _audioSource.clip != null && Microphone.IsRecording(CurrentDeviceName);
+            }
+        }
 
         /// <summary>
         /// Sample rate of recorded audio
@@ -88,6 +97,12 @@ namespace Pv.Unity
             }
 
             UpdateDevices();
+            if (Devices == null || Devices.Count == 0)
+            {
+                Debug.LogError($"There is no valid recording device connected");
+                return;
+            }
+
             CurrentDeviceIndex = 0;
         }
 
@@ -107,7 +122,7 @@ namespace Pv.Unity
         /// <param name="deviceIndex">Index of the new audio capture device</param>
         public void ChangeDevice(int deviceIndex)
         {
-            if (deviceIndex < 0 || deviceIndex >= Microphone.devices.Length)
+            if (deviceIndex < 0 || deviceIndex >= Devices.Count)
             {
                 Debug.LogError($"Specified device index {deviceIndex} is not a valid recording device");
                 return;
@@ -129,17 +144,16 @@ namespace Pv.Unity
         /// <param name="sampleRate">Sample rate to record at</param>
         /// <param name="frameSize">Size of audio frames to be delivered</param>
         public void StartRecording(int sampleRate = 16000, int frameSize = 512)
-        {
+        {            
             StopRecording();
-
+            
             SampleRate = sampleRate;
             FrameLength = frameSize;
 
             _audioSource.clip = Microphone.Start(CurrentDeviceName, true, 1, sampleRate);
             _audioSource.outputAudioMixerGroup = unityVoiceProcessorMixer;
 
-            StartCoroutine(RecordData());
-            IsRecording = true;
+            StartCoroutine(RecordData());            
         }
 
         /// <summary>
@@ -153,9 +167,8 @@ namespace Pv.Unity
             Microphone.End(CurrentDeviceName);
             Destroy(_audioSource.clip);
             _audioSource.clip = null;
-
-            StopCoroutine(RecordData());
-            IsRecording = false;
+            
+            StopCoroutine(RecordData());            
         }
 
         /// <summary>
