@@ -12,23 +12,6 @@ public class UnityVoiceProcessorListener : MonoBehaviour
         Debug.Log("Available Devices: " + string.Join(",", UnityVoiceProcessor.Instance.Devices));
     }
 
-    private void VoiceProcessor_OnFrameCaptured(short[] frame)
-    {
-        float rmsSum = 0;
-        for(int i = 0; i < frame.Length; i++)
-        {
-            rmsSum += Mathf.Pow(frame[i], 2);
-        }
-        float rms = Mathf.Sqrt(rmsSum / frame.Length);
-
-        float dBFS = 20 * Mathf.Log10(rms);
-        if(float.IsInfinity(dBFS) || float.IsNaN(dBFS))
-        { 
-            return; 
-        }    
-        gameObject.transform.localScale = new Vector3(1, (dBFS - 30) / 5, 1);
-    }
-
     // Update is called once per frame
     void Update()
     {                
@@ -45,5 +28,22 @@ public class UnityVoiceProcessorListener : MonoBehaviour
                 UnityVoiceProcessor.Instance.StartRecording(16000, 512);
             }
         }        
+    }
+
+    private void VoiceProcessor_OnFrameCaptured(short[] audioFrame)
+    {
+        float rmsSum = 0;
+        for (int i = 0; i < audioFrame.Length; i++)
+        {
+            rmsSum += Mathf.Pow(audioFrame[i], 2);
+        }
+        float rms = Mathf.Sqrt(rmsSum / audioFrame.Length);
+
+        float dBFS = 20 * Mathf.Log10(rms);
+        if (float.IsInfinity(dBFS) || float.IsNaN(dBFS))
+        {
+            return;
+        }
+        gameObject.transform.localScale = new Vector3(1, (dBFS - 30) / 5, 1);
     }
 }
