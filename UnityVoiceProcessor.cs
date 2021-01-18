@@ -46,6 +46,16 @@ namespace Pv.Unity
         public event Action<short[]> OnFrameCaptured;
 
         /// <summary>
+        /// Event when audio capture thread stops
+        /// </summary>
+        public event Action OnRecordingStop;
+
+        /// <summary>
+        /// Event when audio capture thread starts
+        /// </summary>
+        public event Action OnRecordingStart;
+
+        /// <summary>
         /// Available audio recording devices
         /// </summary>
         public List<string> Devices { get; private set; }
@@ -87,6 +97,7 @@ namespace Pv.Unity
         }
 
         AudioSource _audioSource;
+        private event Action RestartRecording;
 
         void Awake()
         {
@@ -128,14 +139,22 @@ namespace Pv.Unity
                 return;
             }
 
-            bool wasRecording = Microphone.IsRecording(CurrentDeviceName);
-            if (wasRecording)
+            if (IsRecording)
+            {
+                // one time event to restart recording with the new device 
+                // the moment the last session has completed
+                RestartRecording += () =>
+                {
+                    CurrentDeviceIndex = deviceIndex;
+                    StartRecording(SampleRate, FrameLength);
+                    RestartRecording = null;
+                };
                 StopRecording();
-
-            CurrentDeviceIndex = deviceIndex;
-
-            if (wasRecording)
-                StartRecording(SampleRate, FrameLength);
+            }
+            else
+            {
+                CurrentDeviceIndex = deviceIndex;
+            }
         }
 
         /// <summary>
@@ -144,16 +163,28 @@ namespace Pv.Unity
         /// <param name="sampleRate">Sample rate to record at</param>
         /// <param name="frameSize">Size of audio frames to be delivered</param>
         public void StartRecording(int sampleRate = 16000, int frameSize = 512)
-        {            
-            StopRecording();
-            
+        {
+            if (IsRecording)
+            {
+                // one time event to restart recording with the parameters
+                // the moment the last session has completed
+                RestartRecording += () =>
+                {
+                    StartRecording(sampleRate, frameSize);
+                    RestartRecording = null;
+                };
+
+                StopRecording();
+                return;
+            }
+
             SampleRate = sampleRate;
             FrameLength = frameSize;
 
             _audioSource.clip = Microphone.Start(CurrentDeviceName, true, 1, sampleRate);
             _audioSource.outputAudioMixerGroup = unityVoiceProcessorMixer;
 
-            StartCoroutine(RecordData());            
+            StartCoroutine(RecordData());
         }
 
         /// <summary>
@@ -161,14 +192,14 @@ namespace Pv.Unity
         /// </summary>
         public void StopRecording()
         {
-            if (!Microphone.IsRecording(CurrentDeviceName))
+            if (!IsRecording)
                 return;
 
             Microphone.End(CurrentDeviceName);
             Destroy(_audioSource.clip);
             _audioSource.clip = null;
-            
-            StopCoroutine(RecordData());            
+
+            StopCoroutine(RecordData());
         }
 
         /// <summary>
@@ -178,6 +209,9 @@ namespace Pv.Unity
         {
             float[] sampleBuffer = new float[FrameLength];
             int startReadPos = 0;
+
+            OnRecordingStart?.Invoke();
+
             while (_audioSource.clip != null && Microphone.IsRecording(CurrentDeviceName))
             {
                 int curClipPos = Microphone.GetPosition(CurrentDeviceName);
@@ -226,6 +260,9 @@ namespace Pv.Unity
                 // raise buffer event
                 OnFrameCaptured?.Invoke(pcmBuffer);
             }
+
+            OnRecordingStop?.Invoke();
+            RestartRecording?.Invoke();
         }
     }
 }
