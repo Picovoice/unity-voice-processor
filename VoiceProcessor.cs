@@ -63,7 +63,7 @@ namespace Pv.Unity
         /// <summary>
         /// Index of selected audio recording device
         /// </summary>
-        public int CurrentDeviceIndex { get; private set; } = -1;
+        public int CurrentDeviceIndex { get; private set; }
 
         /// <summary>
         /// Name of selected audio recording device
@@ -110,7 +110,8 @@ namespace Pv.Unity
             UpdateDevices();
             if (Devices == null || Devices.Count == 0)
             {
-                Debug.LogError($"There is no valid recording device connected");
+                CurrentDeviceIndex = -1;
+                Debug.LogError("There is no valid recording device connected");
                 return;
             }
 
@@ -135,7 +136,7 @@ namespace Pv.Unity
         {
             if (deviceIndex < 0 || deviceIndex >= Devices.Count)
             {
-                Debug.LogError($"Specified device index {deviceIndex} is not a valid recording device");
+                Debug.LogError(string.Format("Specified device index {0} is not a valid recording device", deviceIndex));
                 return;
             }
 
@@ -210,7 +211,8 @@ namespace Pv.Unity
             float[] sampleBuffer = new float[FrameLength];
             int startReadPos = 0;
 
-            OnRecordingStart?.Invoke();
+            if(OnRecordingStart != null)
+                OnRecordingStart.Invoke();
 
             while (_audioSource.clip != null && Microphone.IsRecording(CurrentDeviceName))
             {
@@ -258,11 +260,14 @@ namespace Pv.Unity
                 }
 
                 // raise buffer event
-                OnFrameCaptured?.Invoke(pcmBuffer);
+                if(OnFrameCaptured != null)
+                    OnFrameCaptured.Invoke(pcmBuffer);
             }
 
-            OnRecordingStop?.Invoke();
-            RestartRecording?.Invoke();
+            if (OnRecordingStop != null)
+                OnRecordingStop.Invoke();
+            if (RestartRecording != null)
+                RestartRecording.Invoke();
         }
     }
 }

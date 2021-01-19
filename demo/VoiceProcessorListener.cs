@@ -8,7 +8,7 @@ public class VoiceProcessorListener : MonoBehaviour
 {
     void Start()
     {
-        Debug.Log("Available Devices: " + string.Join(",", VoiceProcessor.Instance.Devices));
+        Debug.Log("Available Devices: " + string.Join(",", VoiceProcessor.Instance.Devices.ToArray()));
 
         VoiceProcessor.Instance.OnRecordingStart += () => { Debug.Log("Recording started"); };
         VoiceProcessor.Instance.OnRecordingStop += () => { Debug.Log("Recording stopped"); };
