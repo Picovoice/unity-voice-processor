@@ -4,47 +4,47 @@ using UnityEngine;
 
 using Pv.Unity;
 
-public class UnityVoiceProcessorListener : MonoBehaviour
+public class VoiceProcessorListener : MonoBehaviour
 {
     void Start()
     {
-        Debug.Log("Available Devices: " + string.Join(",", UnityVoiceProcessor.Instance.Devices));
+        Debug.Log("Available Devices: " + string.Join(",", VoiceProcessor.Instance.Devices));
 
-        UnityVoiceProcessor.Instance.OnRecordingStart += () => { Debug.Log("Recording started"); };
-        UnityVoiceProcessor.Instance.OnRecordingStop += () => { Debug.Log("Recording stopped"); };
+        VoiceProcessor.Instance.OnRecordingStart += () => { Debug.Log("Recording started"); };
+        VoiceProcessor.Instance.OnRecordingStop += () => { Debug.Log("Recording stopped"); };
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (UnityVoiceProcessor.Instance.IsRecording)
+            if (VoiceProcessor.Instance.IsRecording)
             {
-                UnityVoiceProcessor.Instance.OnFrameCaptured -= VoiceProcessor_OnFrameCaptured;
-                UnityVoiceProcessor.Instance.StopRecording();
+                VoiceProcessor.Instance.OnFrameCaptured -= VoiceProcessor_OnFrameCaptured;
+                VoiceProcessor.Instance.StopRecording();
             }
             else
             {
-                UnityVoiceProcessor.Instance.OnFrameCaptured += VoiceProcessor_OnFrameCaptured;
-                UnityVoiceProcessor.Instance.StartRecording(16000, 512);
+                VoiceProcessor.Instance.OnFrameCaptured += VoiceProcessor_OnFrameCaptured;
+                VoiceProcessor.Instance.StartRecording();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            UnityVoiceProcessor.Instance.ChangeDevice(0);
+            VoiceProcessor.Instance.ChangeDevice(0);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            UnityVoiceProcessor.Instance.ChangeDevice(1);
+            VoiceProcessor.Instance.ChangeDevice(1);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            UnityVoiceProcessor.Instance.ChangeDevice(2);
+            VoiceProcessor.Instance.ChangeDevice(2);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            UnityVoiceProcessor.Instance.ChangeDevice(3);
+            VoiceProcessor.Instance.ChangeDevice(3);
         }
     }
 

@@ -9,12 +9,12 @@ namespace Pv.Unity
     /// <summary>
     /// Class that records audio and delivers frames for real-time audio processing
     /// </summary>
-    public class UnityVoiceProcessor : MonoBehaviour
+    public class VoiceProcessor : MonoBehaviour
     {
         /// <summary>
         /// Mixer to manager microphone audio
         /// </summary>
-        public AudioMixerGroup unityVoiceProcessorMixer;
+        public AudioMixerGroup VoiceProcessorMixer;
 
         /// <summary>
         /// Indicates whether microphone is capturing or not
@@ -81,15 +81,15 @@ namespace Pv.Unity
         /// <summary>
         /// Singleton access
         /// </summary>
-        static UnityVoiceProcessor _instance;
-        public static UnityVoiceProcessor Instance
+        static VoiceProcessor _instance;
+        public static VoiceProcessor Instance
         {
             get
             {
-                if (_instance == null) FindObjectOfType<UnityVoiceProcessor>();
+                if (_instance == null) FindObjectOfType<VoiceProcessor>();
                 if (_instance == null)
                 {
-                    _instance = new GameObject("Pv.Unity.UnityVoiceProcessor").AddComponent<UnityVoiceProcessor>();
+                    _instance = new GameObject("Pv.Unity.VoiceProcessor").AddComponent<VoiceProcessor>();
                     DontDestroyOnLoad(_instance.gameObject);
                 }
                 return _instance;
@@ -182,7 +182,7 @@ namespace Pv.Unity
             FrameLength = frameSize;
 
             _audioSource.clip = Microphone.Start(CurrentDeviceName, true, 1, sampleRate);
-            _audioSource.outputAudioMixerGroup = unityVoiceProcessorMixer;
+            _audioSource.outputAudioMixerGroup = VoiceProcessorMixer;
 
             StartCoroutine(RecordData());
         }
