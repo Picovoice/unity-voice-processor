@@ -34,10 +34,7 @@ namespace Pv.Unity
         {
             get
             {
-                if (string.IsNullOrEmpty(CurrentDeviceName))
-                    return false;
-                else
-                    return _audioSource.clip != null && Microphone.IsRecording(CurrentDeviceName);
+                return _audioSource.clip != null && Microphone.IsRecording(CurrentDeviceName);
             }
         }
 
