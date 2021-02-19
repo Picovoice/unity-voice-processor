@@ -115,15 +115,7 @@ namespace Pv.Unity
                 _audioSource = gameObject.AddComponent<AudioSource>();
             }
 
-            UpdateDevices();
-            if (Devices == null || Devices.Count == 0)
-            {
-                CurrentDeviceIndex = -1;
-                Debug.LogError("There is no valid recording device connected");
-                return;
-            }
-
-            CurrentDeviceIndex = 0;
+            UpdateDevices();            
         }
 
         /// <summary>
@@ -134,6 +126,15 @@ namespace Pv.Unity
             Devices = new List<string>();
             foreach (var device in Microphone.devices)
                 Devices.Add(device);
+            
+            if (Devices == null || Devices.Count == 0)
+            {
+                CurrentDeviceIndex = -1;
+                Debug.LogError("There is no valid recording device connected");
+                return;
+            }
+
+            CurrentDeviceIndex = 0;
         }
 
         /// <summary>
@@ -175,15 +176,16 @@ namespace Pv.Unity
         {
             if (IsRecording)
             {
-                // one time event to restart recording with the parameters
-                // the moment the last session has completed
-                RestartRecording += () =>
+                // if sample rate or frame size have changed, restart recording
+                if (sampleRate != SampleRate || frameSize != FrameLength) 
                 {
-                    StartRecording(sampleRate, frameSize);
-                    RestartRecording = null;
-                };
-
-                StopRecording();
+                    RestartRecording += () =>
+                    {
+                        StartRecording(SampleRate, FrameLength);
+                        RestartRecording = null;
+                    };
+                    StopRecording();
+                }
                 return;
             }
 
@@ -222,7 +224,7 @@ namespace Pv.Unity
             if(OnRecordingStart != null)
                 OnRecordingStart.Invoke();
 
-            while (_audioSource.clip != null && Microphone.IsRecording(CurrentDeviceName))
+            while (IsRecording)
             {
                 int curClipPos = Microphone.GetPosition(CurrentDeviceName);
                 if (curClipPos < startReadPos)
