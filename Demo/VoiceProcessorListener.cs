@@ -19,8 +19,7 @@ public class VoiceProcessorListener : MonoBehaviour
     {
         Debug.Log("Available Devices: " + string.Join(",", VoiceProcessor.Instance.Devices.ToArray()));
 
-        VoiceProcessor.Instance.OnRecordingStart += () => { Debug.Log("Recording started"); };
-        VoiceProcessor.Instance.OnRecordingStop += () => { Debug.Log("Recording stopped"); };
+        VoiceProcessor.Instance.AddFrameListener(_onFrameCaptured);
     }
 
     void Update()
@@ -29,13 +28,11 @@ public class VoiceProcessorListener : MonoBehaviour
         {
             if (VoiceProcessor.Instance.IsRecording)
             {
-                VoiceProcessor.Instance.OnFrameCaptured -= VoiceProcessor_OnFrameCaptured;
                 VoiceProcessor.Instance.StopRecording();
             }
             else
             {
-                VoiceProcessor.Instance.OnFrameCaptured += VoiceProcessor_OnFrameCaptured;
-                VoiceProcessor.Instance.StartRecording();
+                VoiceProcessor.Instance.StartRecording(512, 16000);
             }
         }
 
@@ -57,7 +54,7 @@ public class VoiceProcessorListener : MonoBehaviour
         }
     }
 
-    private void VoiceProcessor_OnFrameCaptured(short[] frame)
+    private void _onFrameCaptured(short[] frame)
     {
         float rmsSum = 0;
         for (int i = 0; i < frame.Length; i++)

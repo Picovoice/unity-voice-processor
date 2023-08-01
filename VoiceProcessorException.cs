@@ -9,6 +9,8 @@
 // specific language governing permissions and limitations under the License.
 //
 
+using System;
+
 namespace Pv.Unity
 {
     public class VoiceProcessorException : Exception
@@ -23,13 +25,6 @@ namespace Pv.Unity
         public VoiceProcessorArgumentException() { }
 
         public VoiceProcessorArgumentException(string message) : base(message) { }
-    }
-    
-    public class VoiceProcessorReadException : VoiceProcessorException
-    {
-        public VoiceProcessorReadException() { }
-
-        public VoiceProcessorReadException(string message) : base(message) { }
     }
 
     public class VoiceProcessorStateException : VoiceProcessorException
