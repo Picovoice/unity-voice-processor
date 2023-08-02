@@ -68,9 +68,10 @@ namespace Pv.Unity
         /// <summary>
         /// The number of registered `VoiceProcessorFrameListeners`.
         /// </summary>
-        public int NumFrameListeners 
+        public int NumFrameListeners
         {
-            get {
+            get
+            {
                 return _onFrame.GetInvocationList().Length;
             }
         }
@@ -144,7 +145,7 @@ namespace Pv.Unity
         /// Remove frame listeners from the VoiceProcessor. They will no longer receive audio frames.
         /// </summary>
         /// <param name="listeners">`VoiceProcessorFrameListeners` that you would like to remove.</param>
-        public void RemoveFrameListeners(VoiceProcessorFrameListener[] listeners) 
+        public void RemoveFrameListeners(VoiceProcessorFrameListener[] listeners)
         {
             foreach (var listener in listeners)
             {
@@ -170,7 +171,7 @@ namespace Pv.Unity
             if (IsRecording)
             {
                 // if sample rate or frame size have changed, restart recording
-                if (sampleRate != SampleRate || frameLength != FrameLength) 
+                if (sampleRate != SampleRate || frameLength != FrameLength)
                 {
                     _onRestartRecording += () =>
                     {
@@ -217,7 +218,7 @@ namespace Pv.Unity
                 _audioSource = gameObject.AddComponent<AudioSource>();
             }
 
-            UpdateDevices();            
+            UpdateDevices();
         }
 
         /// <summary>
@@ -227,8 +228,10 @@ namespace Pv.Unity
         {
             Devices = new List<string>();
             foreach (var device in Microphone.devices)
+            {
                 Devices.Add(device);
-            
+            }
+
             if (Devices == null || Devices.Count == 0)
             {
                 CurrentDeviceIndex = -1;

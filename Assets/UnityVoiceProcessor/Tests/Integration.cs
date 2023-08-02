@@ -24,7 +24,8 @@ namespace Tests
             VoiceProcessor vp = VoiceProcessor.Instance;
             Assert.IsNotNull(vp);
 
-            vp.AddFrameListener((short[] frame) => {
+            vp.AddFrameListener((short[] frame) => 
+            {
                 Assert.AreEqual(vp.FrameLength, frame.Length);
             });
 
@@ -48,10 +49,8 @@ namespace Tests
             VoiceProcessor vp = VoiceProcessor.Instance;
             Assert.IsNotNull(vp);
 
-            VoiceProcessorFrameListener b1 = frame => {
-            };
-            VoiceProcessorFrameListener b2 = frame => {
-            };
+            VoiceProcessorFrameListener b1 = frame => { };
+            VoiceProcessorFrameListener b2 = frame => { };
 
             vp.AddFrameListener(b1);
             Assert.AreEqual(vp.NumFrameListeners, 1);

@@ -25,7 +25,7 @@ listeners.
 
 ## Compatibility
 
-[`Unity Voice Processor` package](unity-voice-processor-1.0.0.unitypackage) unity package is for on **Unity 2017.4+** on the following platforms:
+[`Unity Voice Processor` package](./unity-voice-processor-1.0.0.unitypackage) unity package is for on **Unity 2017.4+** on the following platforms:
 
 - Android 5.0+ (API 21+) (ARM only)
 - iOS 11.0+
@@ -35,7 +35,7 @@ listeners.
 
 ## Installation
 
-The easiest way to install the `Unity Voice Processor` is to import [unity-voice-processor-1.0.0.unitypackage](unity-voice-processor-1.0.0.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the `Unity Voice Processor` is to import [unity-voice-processor-1.0.0.unitypackage](./unity-voice-processor-1.0.0.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 ## Usage
 
@@ -96,5 +96,5 @@ voiceProcessor.clearFrameListeners();
 
 ## Demo
 
-The [Unity Voice Processor Demo](Demo/) demonstrates how to ask for user permissions and capture output from
+The [Unity Voice Processor Demo](./Assets/UnityVoiceProcessor/Demo/) demonstrates how to ask for user permissions and capture output from
 the `Unity Voice Processor`.
