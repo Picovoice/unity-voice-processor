@@ -68,7 +68,7 @@ namespace Pv.Unity
         /// <summary>
         /// The number of registered `VoiceProcessorFrameListeners`.
         /// </summary>
-        public int numFrameListeners 
+        public int NumFrameListeners 
         {
             get {
                 return _onFrame.GetInvocationList().Length;
