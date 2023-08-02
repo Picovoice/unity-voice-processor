@@ -3,7 +3,7 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Assembly-CSharp"
+        "UnityVoiceProcessor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
