@@ -322,7 +322,7 @@ namespace Pv.Unity
                 short[] frame = new short[sampleFrame.Length];
                 for (int i = 0; i < FrameLength; i++)
                 {
-                    frame[i] = (short) Math.Floor(sampleFrame[i] * short.MaxValue);
+                    frame[i] = (short)Math.Floor(sampleFrame[i] * short.MaxValue);
                 }
 
                 _onFrame?.Invoke(frame);
