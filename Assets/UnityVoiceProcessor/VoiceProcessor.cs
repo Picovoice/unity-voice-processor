@@ -72,6 +72,10 @@ namespace Pv.Unity
         {
             get
             {
+                if (_onFrame == null)
+                {
+                    return 0;
+                }
                 return _onFrame.GetInvocationList().Length;
             }
         }

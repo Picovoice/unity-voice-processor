@@ -65,7 +65,7 @@ jobs:
 
   playtest-android:
     name: Run PlayTest unit tests on Android
-    runs-on: pv-ios
+    runs-on: pv-android
 
     steps:
     - uses: actions/checkout@v3
