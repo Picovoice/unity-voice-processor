@@ -174,7 +174,7 @@ namespace Pv.Unity
                 {
                     _onRestartRecording += () =>
                     {
-                        StartRecording(SampleRate, FrameLength);
+                        StartRecording(FrameLength, SampleRate);
                         _onRestartRecording = null;
                     };
                     StopRecording();
@@ -258,7 +258,7 @@ namespace Pv.Unity
                 _onRestartRecording += () =>
                 {
                     CurrentDeviceIndex = deviceIndex;
-                    StartRecording(SampleRate, FrameLength);
+                    StartRecording(FrameLength, SampleRate);
                     _onRestartRecording = null;
                 };
                 StopRecording();
