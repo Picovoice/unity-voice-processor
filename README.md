@@ -18,6 +18,7 @@ listeners.
 - [Unity Voice Processor](#unity-voice-processor)
     - [Table of Contents](#table-of-contents)
     - [Compatibility](#compatibility)
+    - [Requirements](#requirements)
     - [Installation](#installation)
     - [Usage](#usage)
         - [Capturing with Multiple Listeners](#capturing-with-multiple-listeners)
@@ -32,6 +33,11 @@ listeners.
 - Windows (x86_64)
 - macOS (x86_64)
 - Linux (x86_64)
+
+## Requirements
+
+- Unity 2017.4+
+- Unity Build Support modules for desired platforms
 
 ## Installation
 
