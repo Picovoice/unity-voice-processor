@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace Pv.Unity
 {
-    class Recorder
+    class WavFileWriter
     {
         public void Save(string fileName, List<short[]> audioData)
         {

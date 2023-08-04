@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Bugs in Unity Voice Processor
-title: 'Unity Voice PRocessor Issue: '
+title: 'Unity Voice Processor Issue: '
 labels: bug
 assignees: ''
 

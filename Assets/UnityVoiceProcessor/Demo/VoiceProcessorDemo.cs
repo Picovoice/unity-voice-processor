@@ -37,8 +37,8 @@ public class VoiceProcessorDemo : MonoBehaviour
             {
                 if (_dumpAudio)
                 {
-                    var recorder = new Recorder();
-                    recorder.Save("unity_voice_processor.wav", _audioData);
+                    var wavFileWriter = new WavFileWriter();
+                    wavFileWriter.Save("unity_voice_processor.wav", _audioData);
                 }
                 VoiceProcessor.Instance.StopRecording();
             }
