@@ -10,6 +10,11 @@ This is an demo app that demonstrates how to ask for user permissions and captur
 - macOS (x86_64, arm64)
 - Linux (x86_64)
 
+## Requirements
+
+- Unity 2017.4+
+- Unity Build Support modules for desired platforms
+
 ## Usage
 
 The easiest way to run the demo is to simply import the [Unity Voice Processor Package](../../../unity-voice-processor-1.0.0.unitypackage) into your project, open the `VoiceProcessorDemo` scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.

@@ -19,6 +19,7 @@ listeners.
 - [Unity Voice Processor](#unity-voice-processor)
     - [Table of Contents](#table-of-contents)
     - [Compatibility](#compatibility)
+    - [Requirements](#requirements)
     - [Installation](#installation)
     - [Usage](#usage)
         - [Capturing with Multiple Listeners](#capturing-with-multiple-listeners)
@@ -33,6 +34,11 @@ listeners.
 - Windows (x86_64)
 - macOS (x86_64, arm64)
 - Linux (x86_64)
+
+## Requirements
+
+- Unity 2017.4+
+- Unity Build Support modules for desired platforms
 
 ## Installation
 
@@ -55,7 +61,7 @@ void onFrameCaptured(short[] frame) {
     // use audio data
 }
 
-voiceProcessor.addFrameListener(onFrameCaptured);
+voiceProcessor.AddFrameListener(onFrameCaptured);
 ```
 
 Start audio capture with the desired frame length and audio sample rate:
@@ -64,12 +70,12 @@ Start audio capture with the desired frame length and audio sample rate:
 readonly int frameLength = 512;
 readonly int sampleRate = 16000;
 
-voiceProcessor.start(frameLength, sampleRate);
+voiceProcessor.StartRecording(frameLength, sampleRate);
 ```
 
 Stop audio capture:
 ```csharp
-voiceProcessor.stop();
+voiceProcessor.StopRecording();
 ```
 
 Once audio capture has started successfully, any frame listeners assigned to the `VoiceProcessor`
@@ -81,18 +87,18 @@ Any number of listeners can be added to and removed from the `VoiceProcessor` in
 the instance can only record audio with a single audio configuration (`frameLength` and `sampleRate`),
 which all listeners will receive once a call to `start()` has been made. To add multiple listeners:
 ```csharp
-void onFrameCaptured1(short[] frame) { }
-void onFrameCaptured2(short[] frame) { }
+void OnFrameCaptured1(short[] frame) { }
+void OnFrameCaptured2(short[] frame) { }
 
 VoiceProcessorFrameListener[] listeners = new VoiceProcessorFrameListener[] {
-        listener1, listener2 
+        OnFrameCaptured1, OnFrameCaptured2 
 };
 
-voiceProcessor.addFrameListeners(listeners);
+voiceProcessor.AddFrameListeners(listeners);
 
-voiceProcessor.removeFrameListeners(listeners);
+voiceProcessor.RemoveFrameListeners(listeners);
 // or
-voiceProcessor.clearFrameListeners();
+voiceProcessor.ClearFrameListeners();
 ```
 
 ## Demo
