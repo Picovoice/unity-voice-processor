@@ -177,12 +177,15 @@ namespace Pv.Unity
                 // if sample rate or frame size have changed, restart recording
                 if (sampleRate != SampleRate || frameLength != FrameLength)
                 {
-                    _onRestartRecording += () =>
-                    {
-                        StartRecording(FrameLength, SampleRate);
-                        _onRestartRecording = null;
-                    };
-                    StopRecording();
+                    throw new VoiceProcessorArgumentException(
+                        String.Format(
+                            "VoiceProcessor StartRecording() was called with frame length " +
+                                        "%d and sample rate %d while already recording with " +
+                                        "frame length %d and sample rate %d",
+                            frameLength,
+                            sampleRate,
+                            FrameLength,
+                            SampleRate));
                 }
                 return;
             }

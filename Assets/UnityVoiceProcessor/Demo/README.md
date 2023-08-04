@@ -7,7 +7,7 @@ This is an demo app that demonstrates how to ask for user permissions and captur
 - Android 5.0+ (API 21+) (ARM only)
 - iOS 11.0+
 - Windows (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Linux (x86_64)
 
 ## Usage

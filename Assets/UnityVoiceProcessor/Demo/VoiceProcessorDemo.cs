@@ -9,12 +9,19 @@
 // specific language governing permissions and limitations under the License.
 //
 
+using System.Collections.Generic;
 using UnityEngine;
 
 using Pv.Unity;
 
 public class VoiceProcessorDemo : MonoBehaviour
 {
+    readonly int FrameLength = 512;
+    readonly int SampleRate = 16000;
+
+    private bool _dumpAudio = false;
+    private List<short[]> _audioData = new List<short[]>();
+
     void Start()
     {
         Debug.Log("Available Devices: " + string.Join(",", VoiceProcessor.Instance.Devices.ToArray()));
@@ -28,11 +35,20 @@ public class VoiceProcessorDemo : MonoBehaviour
         {
             if (VoiceProcessor.Instance.IsRecording)
             {
+                if (_dumpAudio)
+                {
+                    var recorder = new Recorder();
+                    recorder.Save("unity_voice_processor.wav", _audioData);
+                }
                 VoiceProcessor.Instance.StopRecording();
             }
             else
             {
-                VoiceProcessor.Instance.StartRecording(512, 16000);
+                if (_dumpAudio)
+                {
+                    _audioData.Clear();
+                }
+                VoiceProcessor.Instance.StartRecording(FrameLength, SampleRate);
             }
         }
 
@@ -56,6 +72,11 @@ public class VoiceProcessorDemo : MonoBehaviour
 
     private void _onFrameCaptured(short[] frame)
     {
+        if (_dumpAudio)
+        {
+            _audioData.Add(frame);
+        }
+
         float rmsSum = 0;
         for (int i = 0; i < frame.Length; i++)
         {

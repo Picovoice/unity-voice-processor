@@ -1,5 +1,6 @@
 # Unity Voice Processor
 
+[![GitHub release](https://img.shields.io/github/release/Picovoice/unity-voice-processor.svg)](https://github.com/Picovoice/unity-voice-processor/releases)
 [![GitHub](https://img.shields.io/github/license/Picovoice/unity-voice-processor)](https://github.com/Picovoice/unity-voice-processor/)
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
@@ -30,7 +31,7 @@ listeners.
 - Android 5.0+ (API 21+) (ARM only)
 - iOS 11.0+
 - Windows (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Linux (x86_64)
 
 ## Installation
