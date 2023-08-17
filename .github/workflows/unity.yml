@@ -73,7 +73,7 @@ jobs:
 
   playtest-android: 
     name: Run PlayTest unit tests on Android
-    runs-on: pv-android
+    runs-on: pv-ios
 
     steps:
     - uses: actions/checkout@v3
@@ -81,10 +81,10 @@ jobs:
         submodules: 'recursive'
 
     - name: Start Emulator
-      run: /home/picovoice/Android/sdk/emulator/emulator -avd Pixel_5_API_30_x86_64 &
+      run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
 
     - name: Run tests
-      run: xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform Android -logFile - || true
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform Android -logFile - || true
 
     - name: Print results
       run: cat unityresults.xml
