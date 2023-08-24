@@ -38,7 +38,7 @@ jobs:
         submodules: 'recursive'
 
     - name: Build demo
-      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildMacOS -logFile Build/build.log
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -nographics -projectPath . -executeMethod BuildScript.PerformBuildMacOS -logFile Build/build.log
 
   build-windows:
     name: Build Windows Demo
@@ -51,11 +51,11 @@ jobs:
 
     - name: Build demo
       run: >
-        & "C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe" -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildWindows -logFile Build/build.log
+        & "C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe" -quit -batchmode -nographics -projectPath . -executeMethod BuildScript.PerformBuildWindows -logFile Build/build.log
 
   build-android:
     name: Build Android Demo
-    runs-on: pv-android
+    runs-on: pv-ios
 
     steps:
     - uses: actions/checkout@v3
@@ -63,7 +63,7 @@ jobs:
         submodules: 'recursive'
 
     - name: Build demo
-      run: /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildAndroid -logFile Build/build.log
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -nographics -projectPath . -executeMethod BuildScript.PerformBuildAndroid -logFile Build/build.log
 
   build-ios:
     name: Build iOS Demo
@@ -75,4 +75,4 @@ jobs:
         submodules: 'recursive'
 
     - name: Build demo
-      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildIOS -logFile Build/build.log
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -nographics -projectPath . -executeMethod BuildScript.PerformBuildIOS -logFile Build/build.log
