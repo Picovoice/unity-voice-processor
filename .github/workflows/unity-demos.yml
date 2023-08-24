@@ -26,10 +26,7 @@ jobs:
         submodules: 'recursive'
 
     - name: Build demo
-      run: /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -quit -projectPath . -batchmode -executeMethod BuildScript.PerformBuildLinux -logFile Build/build.log
-
-    - name: Print results
-      run: cat Build/build.log
+      run: /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -quit -batchmode -nographics -projectPath . -executeMethod BuildScript.PerformBuildLinux -logFile Build/build.log
 
   build-mac:
     name: Build macOS Demo
