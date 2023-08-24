@@ -1,0 +1,78 @@
+name: Unity Demos
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Assets/UnityVoiceProcessor/Demo/**'
+      - '!README.md'
+      - '.github/workflows/unity-demos.yml'
+  pull_request:
+    branches: [ main, 'v[0-9]+.[0-9]+' ]
+    paths:
+      - 'Assets/UnityVoiceProcessor/Demo/**'
+      - '!README.md'
+      - '.github/workflows/unity-demos.yml'
+
+jobs:
+  build-linux:
+    name: Build Linux Demo
+    runs-on: pv-android
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Build demo
+      run: /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildLinux -logFile Build/build.log
+
+  build-mac:
+    name: Build macOS Demo
+    runs-on: pv-ios
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Build demo
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildMacOS -logFile Build/build.log
+
+  build-windows:
+    name: Build Windows Demo
+    runs-on: pv-windows
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Build demo
+      run: >
+        & "C:\Program Files\Unity\Hub\Editor\2019.4.34f1\Editor\Unity.exe" -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildWindows -logFile Build/build.log
+
+  build-android:
+    name: Build Android Demo
+    runs-on: pv-android
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Build demo
+      run: /home/picovoice/Unity/Hub/Editor/2019.4.34f1/Editor/Unity -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildAndroid -logFile Build/build.log
+
+  build-ios:
+    name: Build iOS Demo
+    runs-on: pv-ios
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Build demo
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -projectPath . -executeMethod BuildScript.PerformBuildIOS -logFile Build/build.log

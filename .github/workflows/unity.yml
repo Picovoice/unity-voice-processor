@@ -71,23 +71,23 @@ jobs:
     - name: Check Results
       run: bash -c "sed -n 2p unityresults.xml | grep Passed"
 
-  # playtest-android: 
-  #   name: Run PlayTest unit tests on Android
-  #   runs-on: pv-ios
+  playtest-android: 
+    name: Run PlayTest unit tests on Android
+    runs-on: pv-ios
 
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #     with:
-  #       submodules: 'recursive'
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
 
-  #   - name: Start Emulator
-  #     run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
+    - name: Start Emulator
+      run: /Users/alirezakenarsari-anhari/Library/Android/sdk/emulator/emulator -avd Pixel_6_API_33 &
 
-  #   - name: Run tests
-  #     run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform Android -logFile - || true
+    - name: Run tests
+      run: /Applications/Unity/Hub/Editor/2019.4.34f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath . -testResults unityresults.xml -testPlatform Android -logFile - || true
 
-  #   - name: Print results
-  #     run: cat unityresults.xml
+    - name: Print results
+      run: cat unityresults.xml
 
-  #   - name: Check Results
-  #     run: sed -n 2p unityresults.xml | grep 'result="Passed"'
+    - name: Check Results
+      run: sed -n 2p unityresults.xml | grep 'result="Passed"'

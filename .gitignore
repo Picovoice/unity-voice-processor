@@ -62,3 +62,4 @@ crashlytics-build.properties
 unityresults.xml
 .vscode
 UserSettings
+!Build/.gitkeep
