@@ -60,3 +60,6 @@ crashlytics-build.properties
 
 .vsconfig
 unityresults.xml
+.vscode
+UserSettings
+!Build/.gitkeep

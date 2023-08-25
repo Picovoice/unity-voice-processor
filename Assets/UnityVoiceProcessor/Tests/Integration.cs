@@ -1,11 +1,11 @@
-using System.Threading;
-
 using NUnit.Framework;
+using System.Threading;
 
 using Pv.Unity;
 
 namespace Tests
 {
+
     public class Integration
     {
         private readonly int _frameLength = 512;
