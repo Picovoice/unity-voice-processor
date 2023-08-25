@@ -23,12 +23,12 @@ public class BuildScript
 
     public static void PerformBuildAndroid()
     {
-        PerformBuild(BuildTarget.Android);
+        PerformBuild(BuildTarget.Android, ".apk");
     }
 
     public static void PerformBuildIOS()
     {
-        PerformBuild(BuildTarget.iOS);
+        PerformBuild(BuildTarget.iOS, ".ipa");
     }
 
     private static void PerformBuild(BuildTarget target, string ext = "")
