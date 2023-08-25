@@ -1,10 +1,7 @@
 using NUnit.Framework;
 using System.Threading;
-using UnityEditor;
-using UnityEditor.TestTools;
 
 using Pv.Unity;
-
 
 namespace Tests
 {
